@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body>
+    <div id="app" class="container" style="margin-top:100px;background:#ff8080">
+        <div v-if="myCnt2 == 0" style="font-size:25px;margin-left:80%;padding-top:30px;">&nbsp;</div>
+        <div v-if="myCnt2 > 0" style="font-size:25px;margin-left:80%;padding-top:30px;">預購數量 : {{myCnt2}}</div>
+        <div class="row" style="padding:60px 20px;font-size:30px;">
+            <div class="col-7">
+                <img v-bind:src="myImage">
+            </div>
+            <div class="col-5 ">
+                <div v-bind:style="borderColor"
+                    style="background: #fff; height:100px;padding-top:5%;border-style:solid;border-width:10px;"
+                    class="text-center ">倒數時間 : {{myTime}} 秒
+                </div>
+                <div class="text-center myClass1">商品名稱 : {{myItem}}</div>
+                <div class="text-center myClass1">剩餘數量 : {{myCnt}} </div>
+                <div style="margin-top:50px;">
+                    <!-- Button trigger modal -->
+                    <button v-if="myTime > 0 && myCnt > 0" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter"
+                        style="width:40%;height:80px;margin-left:60%;font-size:30px;">購買</button>
+                    <button v-if="myTime > 0 && myCnt == 0" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter2"
+                        style="width:40%;height:80px;margin-left:60%;font-size:30px;">預購</button>
+                    <button v-if="myTime == 0" class="btn btn-secondary"
+                        style="width:40%;height:80px;margin-left:60%;font-size:30px;">停售</button>
+
+                    <!-- Modal1 -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title " id="exampleModalLongTitle" style="margin-left: auto;">我要購買
+                                    </h2>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="margin-left: 20%;font-size: 100px;">
+                                    <span style="margin-left: 100px;">{{shopCnt}}</span><br>
+                                    <button class="btn btn-info mybtn1" v-on:click="minus"> - </button>&nbsp;
+                                    <button class="btn btn-info mybtn1" v-on:click="add"> + </button>
+                                </div>
+                                <div class="modal-footer" style="margin-right: 38%;">
+                                    <button v-on:click="check" type="button" class="btn btn-primary mybtn1">確定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal2 -->
+                    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title " id="exampleModalLongTitle" style="margin-left: auto;">我要預購
+                                    </h2>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="margin-left: 20%;font-size: 100px;">
+                                    <span style="margin-left: 90px;">{{shopCnt}}<span><br>
+                                            <button class="btn btn-info mybtn1" v-on:click="minus2"> - </button>&nbsp;
+                                            <button class="btn btn-info mybtn1" v-on:click="add2"> + </button>
+                                </div>
+                                <div class="modal-footer" style="margin-right: 38%;">
+                                    <button v-on:click="check2" type="button" class="btn btn-primary mybtn1">確定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var v = new Vue({
+            el: "#app",
+            data: {
+                myImage: "images/1.jpg",
+                myItem: "蛋糕",
+                myTime: 70,
+                myCnt: 10,
+                shopCnt: 0,
+                myCnt2:0,
+                timer: "",
+                borderColor: "border-color:green",
+            },
+            methods: {
+                minusTime() {
+                    this.myTime--;
+                    if (this.myTime == 0) {
+                        clearInterval(this.timer);
+                    }
+                },
+                add() {
+                    if (this.shopCnt < this.myCnt) {
+                        this.shopCnt++;
+                    }
+                },
+                minus() {
+                    if (this.shopCnt > 0) {
+                        this.shopCnt--;
+                    }
+                },
+                check() {
+                    this.myCnt = this.myCnt - this.shopCnt;
+                    $('#exampleModalCenter').modal('hide');
+                    this.shopCnt = 0;
+                },
+                add2() {
+                    if (this.shopCnt < 99) {
+                        this.shopCnt++;
+                    }
+                },
+                minus2() {
+                    if (this.shopCnt > 0) {
+                        this.shopCnt--;
+                    }
+                },
+                check2() {
+                    this.myCnt2 = this.myCnt2 + this.shopCnt;
+                    $('#exampleModalCenter2').modal('hide');
+                    this.shopCnt = 0;
+                },
+            },
+            mounted() {
+                this.timer = setInterval(this.minusTime, 1000);
+            },
+            watch: {
+                myTime: function () {
+                    if (this.myTime >= 60) {
+                        this.borderColor = "border-color:green";
+                    }
+                    else if (this.myTime == 0) {
+                        this.borderColor = "border-color:gray";
+                        $('#exampleModalCenter').modal('hide');
+                        $('#exampleModalCenter2').modal('hide');
+                    }
+                    else {
+                        this.borderColor = "border-color:orange";
+                    }
+                }
+            }
+        })
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

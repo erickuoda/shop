@@ -1,0 +1,15 @@
+.myClass1{
+    background: #fff;
+     height:100px; 
+     margin-top:50px;
+     padding-top:5%
+}
+
+#app{
+    font-family:Microsoft JhengHei;
+}
+
+.mybtn1{
+    height: 50px;
+    width:100px;
+}
